@@ -9,11 +9,11 @@ class NavBar extends Component {
   render() {
     return (
       <nav>
-        <div className="Title">
+        {/* <div className="Title">
           <h1 className="navbar-logo">
             Alternative Uniswap Interface
           </h1>
-        </div>
+        </div> */}
 
         <div className="NavbarItems">
           <ul className={`nav-menu`}>

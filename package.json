@@ -26,13 +26,13 @@
     "prop-types": "^15.7.2",
     "notistack": "^1.0.10"
   },
-  "homepage": "https://ben-haslam.github.io/Alternative-Uniswap-Interface/",
+  "homepage": "https://psinelnikov.github.io/",
   "scripts": {
     "deploy": "gh-pages -d build",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
+    "test": "NODE_OPTIONS=--openssl-legacy-provider react-scripts test",
+    "eject": "NODE_OPTIONS=--openssl-legacy-provider react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

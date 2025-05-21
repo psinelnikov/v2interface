@@ -38,9 +38,9 @@ function Liquidity(props) {
 
   const deploy_or_remove = (deploy) => {
     if (deploy === true) {
-      return <LiquidityDeployer network={props.network}/>;
+      return <LiquidityDeployer network={props.network} />;
     }
-    return <LiquidityRemover network={props.network}/>;
+    return <LiquidityRemover network={props.network} />;
   };
 
   return (
@@ -55,7 +55,7 @@ function Liquidity(props) {
         </Paper>
       </Container>
 
-      <Grid
+      {/* <Grid
         container
         className={classes.footer}
         direction="row"
@@ -66,7 +66,7 @@ function Liquidity(props) {
           Alternative Uniswap Interface | Get AUT for use in the bakerloo testnet{" "}
           <a href="https://faucet.bakerloo.autonity.network/">here</a>
         </p>
-      </Grid>
+      </Grid> */}
     </div>
   );
 }

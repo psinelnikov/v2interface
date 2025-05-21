@@ -47,11 +47,9 @@ function ConnectWalletPage() {
   const classes = useStyles();
   return (
     <div>
-      <div className="Title">
-        <h1 className="navbar-logo">
-          Alternative Uniswap Interface
-        </h1>
-      </div>
+      {/* <div className="Title">
+        <h1 className="navbar-logo">Uniswap v2 Interface</h1>
+      </div> */}
 
       <Container>
         <Paper className={classes.paperContainer}>
@@ -66,18 +64,15 @@ function ConnectWalletPage() {
         </Paper>
       </Container>
 
-      <Grid
+      {/* <Grid
         container
         className={classes.footer}
         direction="row"
         justifyContent="center"
         alignItems="flex-end"
       >
-        <p>
-          Alternative Uniswap Interface | Get AUT for use in the bakerloo testnet{" "}
-          <a href="https://faucet.bakerloo.autonity.network/">here</a>
-        </p>
-      </Grid>
+        <p>Uniswap v2 Interface</p>
+      </Grid> */}
     </div>
   );
 }
