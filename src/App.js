@@ -1,8 +1,7 @@
 import React from "react";
 import "./App.css";
-import { ethers } from "ethers";
 import Web3Provider from "./network";
-import NarBar from "./NavBar/NavBar";
+import NavBar from "./NavBar/NavBar";
 import CoinSwapper from "./CoinSwapper/CoinSwapper";
 import { Route } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
@@ -12,12 +11,16 @@ import { createTheme, ThemeProvider } from "@material-ui/core";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#ff0000",
-      contrastText: "#ffffff",
+      main: "#00CFFF",
+      contrastText: "#000",
     },
     secondary: {
-      main: "#9e9e9e",
-      contrastText: "#ffffff",
+      main: "#000000",
+      contrastText: "#9f9f9f",
+    },
+    background: {
+      default: "#000000",
+      paper: "#10141A",
     },
   },
 });
@@ -30,7 +33,7 @@ const App = () => {
           <Web3Provider
             render={(network) => (
               <div>
-                <NarBar />
+                <NavBar />
                 <Route exact path="/">
                   <CoinSwapper network={network} />
                 </Route>

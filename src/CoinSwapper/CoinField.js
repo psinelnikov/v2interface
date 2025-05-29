@@ -2,24 +2,23 @@ import React from "react";
 import { Fab, Grid, InputBase, makeStyles } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PropTypes from "prop-types";
-import * as COLORS from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     padding: theme.spacing(1),
     minHeight: "80px",
-    backgroundColor: COLORS.grey[50],
+    backgroundColor: "#263238",
     borderRadius: theme.spacing(2),
-    borderColor: COLORS.grey[300],
+    borderColor: "#263238",
     borderWidth: "1px",
     borderStyle: "solid",
   },
   container_input: {
     padding: theme.spacing(1),
     minHeight: "68px",
-    backgroundColor: COLORS.grey[50],
+    backgroundColor: "#263238",
     borderRadius: theme.spacing(2),
-    borderColor: COLORS.grey[300],
+    borderColor: "#263238",
     borderWidth: "1px",
     borderStyle: "solid",
     marginLeft: "50%",
@@ -39,9 +38,17 @@ const useStyles = makeStyles((theme) => ({
   input: {
     ...theme.typography.h5,
     width: "100%",
+    backgroundColor: "#263238", // Light grey background
+    color: "#fff", // Dark text for readability
+    borderRadius: theme.spacing(1),
+    padding: theme.spacing(1),
   },
   inputBase: {
     textAlign: "right",
+    backgroundColor: "#263238", // Light grey background
+    color: "#fff", // Dark text for readability
+    borderRadius: theme.spacing(1),
+    padding: theme.spacing(1),
   },
 }));
 
@@ -161,7 +168,7 @@ export default function CoinField(props) {
         className={classes.grid}
       >
         {/* Button */}
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Fab
             size="small"
             variant="extended"
@@ -174,7 +181,7 @@ export default function CoinField(props) {
         </Grid>
 
         {/* Text Field */}
-        <Grid item xs={9}>
+        <Grid item xs={8}>
           <InputBase
             value={value}
             onChange={onChange}

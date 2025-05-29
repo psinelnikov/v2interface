@@ -15,7 +15,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import CoinButton from "./CoinButton";
 import { doesTokenExist } from "../ethereumFunctions";
 import PropTypes from "prop-types";
-import * as COLORS from "@material-ui/core/colors";
 
 const styles = (theme) => ({
   dialogContainer: {
@@ -69,7 +68,11 @@ const DialogTitle = withStyles(styles)((props) => {
           {children}
         </Typography>
         {onClose ? (
-          <IconButton aria-label="close" onClick={onClose}>
+          <IconButton
+            aria-label="close"
+            onClick={onClose}
+            style={{ color: "#fff" }}
+          >
             <CloseIcon />
           </IconButton>
         ) : null}
@@ -83,7 +86,7 @@ const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
     padding: theme.spacing(1),
-    backgroundColor: COLORS.grey[100],
+    backgroundColor: "#10141A",
   },
 }))(MuiDialogActions);
 
@@ -101,7 +104,7 @@ export default function CoinDialog(props) {
   // user closes the dialog without selecting anything), or will be a string containing the address of a coin.
 
   const classes = useStyles();
-  const { onClose, open, coins, signer, ...others } = props;
+  const { onClose, open, coins, signer } = props;
 
   const [address, setAddress] = React.useState("");
   const [error, setError] = React.useState("");
@@ -131,7 +134,9 @@ export default function CoinDialog(props) {
       maxWidth="sm"
       classes={{ paper: classes.dialogContainer }}
     >
-      <DialogTitle onClose={() => exit(undefined)}>Select Coin</DialogTitle>
+      <DialogTitle onClose={() => exit(undefined)}>
+        <span style={{ color: "#fff" }}>Select Coin</span>
+      </DialogTitle>
 
       <hr className={classes.hr} />
 
@@ -146,6 +151,9 @@ export default function CoinDialog(props) {
             helperText={error}
             fullWidth
             className={classes.address}
+            InputProps={{ style: { color: "#fff" } }}
+            InputLabelProps={{ style: { color: "#fff" } }}
+            FormHelperTextProps={{ style: { color: "#fff" } }}
           />
 
           <hr className={classes.hr} />
@@ -171,7 +179,7 @@ export default function CoinDialog(props) {
 
       <DialogActions>
         <Button autoFocus onClick={submit} color="primary">
-          Enter
+          <span style={{ color: "#fff", fontWeight: 600 }}>Enter</span>
         </Button>
       </DialogActions>
     </Dialog>

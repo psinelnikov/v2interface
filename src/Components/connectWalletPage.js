@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Grid,
-  makeStyles,
-  Paper,
-  Typography,
-} from "@material-ui/core";
+import { Container, makeStyles, Paper, Typography } from "@material-ui/core";
 
 const styles = (theme) => ({
   paperContainer: {

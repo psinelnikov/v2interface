@@ -1,14 +1,19 @@
 body {
-  background-color: #f4f4f4;
-  color: #555555;
-
-  font-family: Arial, Helvetica, sans-serif;
-
-  font-size: 15px;
-  font-weight: normal;
-
-  line-height: 1em;
+  min-height: 100vh;
+  background: #000000;
+  color: #fff;
+  font-family: "Inter", "Segoe UI", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
   margin: 0;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .outer {
@@ -16,19 +21,36 @@ body {
 }
 
 .container {
-  width: 80%;
-  margin: auto;
-  border: 5px #333333 solid;
-  padding: 10px;
-  border-radius: 25px;
+  max-width: 420px;
+  margin: 60px auto;
+  background: rgba(0, 0, 0, 0.92);
+  box-shadow: 0 8px 32px 0 rgba(0, 207, 255, 0.14);
+  border-radius: 24px;
+  border: 1.5px solid #00cfff;
+  padding: 32px 28px 24px 28px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .input {
-  width: 1;
-  color: #777;
-  padding: 8;
-  margin: 10;
-  width: 200;
+  width: 100%;
+  padding: 14px 18px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 1.1rem;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+.input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 2px 12px rgba(130, 0, 255, 0.15);
 }
 
 .myform {
@@ -62,10 +84,30 @@ body {
 }
 
 .swap_button {
-  float: right;
+  width: 100%;
+  padding: 16px;
+  margin-top: 18px;
+  background: linear-gradient(90deg, #00cfff 0%, #007799 100%);
+  color: #fff;
+  border: none;
+  border-radius: 18px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0, 207, 255, 0.18);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.swap_button:hover {
+  background: linear-gradient(90deg, #007799 0%, #00cfff 100%);
+  transform: translateY(-2px) scale(1.03);
 }
 
 .markdown {
-  width: 80%;
-  margin: auto;
+  width: 90%;
+  margin: 0 auto 32px auto;
+  color: #d1c4e9;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+  padding: 20px;
+  font-size: 1.05rem;
 }

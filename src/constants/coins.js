@@ -6,7 +6,7 @@ const HYPERION_SEPOLIACoins = [
   {
     name: "Metis",
     abbr: "METIS",
-    address: "", // Weth address is fetched from the router
+    address: "0x94765A5Ad79aE18c6913449Bf008A0B5f247D301", // Weth address is fetched from the router
   },
   {
     name: "Dai",

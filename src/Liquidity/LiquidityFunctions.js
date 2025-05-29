@@ -123,18 +123,24 @@ export async function removeLiquidity(
   const token1Decimals = await getDecimals(token1);
   const token2Decimals = await getDecimals(token2);
 
-  const Getliquidity = (liquidity_tokens)=>{
-    if (liquidity_tokens < 0.001){
-      return ethers.BigNumber.from(liquidity_tokens*10**18);
+  const Getliquidity = (liquidity_tokens) => {
+    if (liquidity_tokens < 0.001) {
+      return ethers.BigNumber.from(liquidity_tokens * 10 ** 18);
     }
     return ethers.utils.parseUnits(String(liquidity_tokens), 18);
-  }
+  };
 
   const liquidity = Getliquidity(liquidity_tokens);
-  console.log('liquidity: ', liquidity);
+  console.log("liquidity: ", liquidity);
 
-  const amount1Min = ethers.utils.parseUnits(String(amount1min), token1Decimals);
-  const amount2Min = ethers.utils.parseUnits(String(amount2min), token2Decimals);
+  const amount1Min = ethers.utils.parseUnits(
+    String(amount1min),
+    token1Decimals
+  );
+  const amount2Min = ethers.utils.parseUnits(
+    String(amount2min),
+    token2Decimals
+  );
 
   const time = Math.floor(Date.now() / 1000) + 200000;
   const deadline = ethers.BigNumber.from(time);
@@ -209,26 +215,33 @@ async function quoteMintLiquidity(
   amountB,
   factory,
   signer
-){
+) {
   const MINIMUM_LIQUIDITY = 1000;
   let _reserveA = 0;
   let _reserveB = 0;
   let totalSupply = 0;
-  [_reserveA, _reserveB, totalSupply] = await factory.getPair(address1, address2).then(async (pairAddress) => {
-    if (pairAddress !== '0x0000000000000000000000000000000000000000'){
-      const pair = new Contract(pairAddress, PAIR.abi, signer);
+  [_reserveA, _reserveB, totalSupply] = await factory
+    .getPair(address1, address2)
+    .then(async (pairAddress) => {
+      if (pairAddress !== "0x0000000000000000000000000000000000000000") {
+        const pair = new Contract(pairAddress, PAIR.abi, signer);
 
-      const reservesRaw = await fetchReserves(address1, address2, pair, signer); // Returns the reserves already formated as ethers
-      const reserveA = reservesRaw[0];
-      const reserveB = reservesRaw[1];
-    
-      const _totalSupply = await pair.totalSupply();
-      const totalSupply = Number(ethers.utils.formatEther(_totalSupply));
-      return [reserveA, reserveB, totalSupply]
-    } else {
-      return [0,0,0]
-    }
-  });
+        const reservesRaw = await fetchReserves(
+          address1,
+          address2,
+          pair,
+          signer
+        ); // Returns the reserves already formated as ethers
+        const reserveA = reservesRaw[0];
+        const reserveB = reservesRaw[1];
+
+        const _totalSupply = await pair.totalSupply();
+        const totalSupply = Number(ethers.utils.formatEther(_totalSupply));
+        return [reserveA, reserveB, totalSupply];
+      } else {
+        return [0, 0, 0];
+      }
+    });
 
   const token1 = new Contract(address1, ERC20.abi, signer);
   const token2 = new Contract(address2, ERC20.abi, signer);
@@ -238,20 +251,21 @@ async function quoteMintLiquidity(
   const token1Decimals = await getDecimals(token1);
   const token2Decimals = await getDecimals(token2);
 
-  const valueA = amountA*(10**token1Decimals);
-  const valueB = amountB*(10**token2Decimals);
+  const valueA = amountA * 10 ** token1Decimals;
+  const valueB = amountB * 10 ** token2Decimals;
 
-  const reserveA = _reserveA*(10**token1Decimals);
-  const reserveB = _reserveB*(10**token2Decimals);
+  const reserveA = _reserveA * 10 ** token1Decimals;
+  const reserveB = _reserveB * 10 ** token2Decimals;
 
-  if (totalSupply == 0){
-    return Math.sqrt(((valueA * valueB)-MINIMUM_LIQUIDITY))*10**(-18);
-  };
-  
-  return (
-    Math.min(valueA*totalSupply/reserveA, valueB*totalSupply/reserveB)
+  if (totalSupply === 0) {
+    return Math.sqrt(valueA * valueB - MINIMUM_LIQUIDITY) * 10 ** -18;
+  }
+
+  return Math.min(
+    (valueA * totalSupply) / reserveA,
+    (valueB * totalSupply) / reserveB
   );
-};
+}
 
 export async function quoteAddLiquidity(
   address1,
@@ -261,7 +275,6 @@ export async function quoteAddLiquidity(
   factory,
   signer
 ) {
-
   const pairAddress = await factory.getPair(address1, address2);
   const pair = new Contract(pairAddress, PAIR.abi, signer);
 
@@ -276,12 +289,9 @@ export async function quoteAddLiquidity(
       amountADesired,
       amountBDesired,
       factory,
-      signer);
-    return [
-      amountADesired,
-      amountBDesired,
-      amountOut.toPrecision(8),
-    ];
+      signer
+    );
+    return [amountADesired, amountBDesired, amountOut.toPrecision(8)];
   } else {
     const amountBOptimal = quote(amountADesired, reserveA, reserveB);
     if (amountBOptimal <= amountBDesired) {
@@ -291,30 +301,20 @@ export async function quoteAddLiquidity(
         amountADesired,
         amountBOptimal,
         factory,
-        signer);
-      return [
-        amountADesired,
-        amountBOptimal,
-        amountOut.toPrecision(8),
-      ];
-    } else {
-      const amountAOptimal = quote(
-        amountBDesired,
-        reserveB,
-        reserveA
+        signer
       );
+      return [amountADesired, amountBOptimal, amountOut.toPrecision(8)];
+    } else {
+      const amountAOptimal = quote(amountBDesired, reserveB, reserveA);
       const amountOut = await quoteMintLiquidity(
         address1,
         address2,
         amountAOptimal,
         amountBDesired,
         factory,
-        signer);
-      return [
-        amountAOptimal,
-        amountBDesired,
-        amountOut.toPrecision(8),
-      ];
+        signer
+      );
+      return [amountAOptimal, amountBDesired, amountOut.toPrecision(8)];
     }
   }
 }

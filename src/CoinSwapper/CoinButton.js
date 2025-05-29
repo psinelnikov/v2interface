@@ -1,19 +1,22 @@
 import React from "react";
 import { ButtonBase, Grid, makeStyles, Typography } from "@material-ui/core";
 import PropTypes from "prop-types";
-import * as COLORS from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   button: {
     width: "100%",
     paddingTop: theme.spacing(0.5),
     paddingBottom: theme.spacing(0.5),
+    color: "#fff", // Softer light gray text
+    backgroundColor: "#263238", // Much darker blue-gray
+    borderRadius: theme.spacing(1),
     "&:hover, &$focusVisible": {
-      backgroundColor: COLORS.grey[200],
+      backgroundColor: "#11171a", // Even darker on hover
     },
   },
   coinName: {
-    opacity: 0.6,
+    opacity: 0.8,
+    color: "#e0e0e0", // Softer light gray for coin name
   },
 }));
 
@@ -24,7 +27,7 @@ CoinButton.propTypes = {
 };
 
 export default function CoinButton(props) {
-  const { coinName, coinAbbr, onClick, ...other } = props;
+  const { coinName, coinAbbr, onClick } = props;
   const classes = useStyles();
 
   return (

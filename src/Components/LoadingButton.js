@@ -1,7 +1,6 @@
 import React from "react";
 import { Button, CircularProgress, makeStyles } from "@material-ui/core";
 import green from "@material-ui/core/colors/green";
-import red from "@material-ui/core/colors/red";
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -15,6 +14,10 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     marginTop: -12,
     marginLeft: -12,
+  },
+  disabledButton: {
+    backgroundColor: theme.palette.secondary.main + " !important",
+    color: theme.palette.secondary.contrastText + " !important",
   },
 }));
 
@@ -30,6 +33,7 @@ export default function LoadingButton(props) {
         disabled={loading || !valid}
         type="submit"
         onClick={onClick}
+        classes={{ disabled: classes.disabledButton }}
         {...other}
       >
         {children}

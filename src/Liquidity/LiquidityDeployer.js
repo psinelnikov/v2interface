@@ -1,11 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import { useSnackbar } from "notistack";
-import {
-  getBalanceAndSymbol,
-  getReserves,
-} from "../ethereumFunctions";
+import { getBalanceAndSymbol, getReserves } from "../ethereumFunctions";
 
 import { addLiquidity, quoteAddLiquidity } from "./LiquidityFunctions";
 
@@ -21,7 +18,7 @@ const styles = (theme) => ({
     paddingBottom: theme.spacing(3),
     width: "40%",
     overflow: "wrap",
-    background: "linear-gradient(45deg, #ff0000 30%, #FF8E53 90%)",
+    background: "#00CFFF",
     color: "white",
   },
   fullWidth: {
@@ -58,7 +55,7 @@ function LiquidityDeployer(props) {
   // Stores a record of whether their respective dialog window is open
   const [dialog1Open, setDialog1Open] = React.useState(false);
   const [dialog2Open, setDialog2Open] = React.useState(false);
-  const [wrongNetworkOpen, setwrongNetworkOpen] = React.useState(false);
+  const [wrongNetworkOpen] = React.useState(false);
 
   // Stores data about their respective coin
   const [coin1, setCoin1] = React.useState({
@@ -125,24 +122,28 @@ function LiquidityDeployer(props) {
   };
 
   // Determines whether the button should be enabled or not
-  const isButtonEnabled = () => {
-
+  const isButtonEnabled = useCallback(() => {
     // If both coins have been selected, and a valid float has been entered for both, which are less than the user's balances, then return true
     const parsedInput1 = parseFloat(field1Value);
     const parsedInput2 = parseFloat(field2Value);
     return (
       coin1.address &&
       coin2.address &&
-      parsedInput1 !== NaN &&
+      !isNaN(parsedInput1) &&
       0 < parsedInput1 &&
-      parsedInput2 !== NaN &&
+      !isNaN(parsedInput2) &&
       0 < parsedInput2 &&
       parsedInput1 <= coin1.balance &&
       parsedInput2 <= coin2.balance
     );
-  };
-
-
+  }, [
+    coin1.address,
+    coin1.balance,
+    coin2.address,
+    coin2.balance,
+    field1Value,
+    field2Value,
+  ]);
 
   const deploy = () => {
     console.log("Attempting to deploy liquidity...");
@@ -153,8 +154,8 @@ function LiquidityDeployer(props) {
       coin2.address,
       field1Value,
       field2Value,
-      '0',
-      '0',
+      "0",
+      "0",
       props.network.router,
       props.network.account,
       props.network.signer
@@ -195,7 +196,7 @@ function LiquidityDeployer(props) {
         props.network.signer,
         props.network.weth.address,
         props.network.coins
-        ).then((data) => {
+      ).then((data) => {
         setCoin1({
           address: address,
           symbol: data.symbol,
@@ -217,13 +218,14 @@ function LiquidityDeployer(props) {
     // We only update the values if the user provides a token
     else if (address) {
       // Getting some token data is async, so we need to wait for the data to return, hence the promise
-      getBalanceAndSymbol(props.network.account,
+      getBalanceAndSymbol(
+        props.network.account,
         address,
         props.network.provider,
         props.network.signer,
         props.network.weth.address,
         props.network.coins
-        ).then((data) => {
+      ).then((data) => {
         setCoin2({
           address: address,
           symbol: data.symbol,
@@ -248,14 +250,18 @@ function LiquidityDeployer(props) {
         props.network.factory,
         props.network.signer,
         props.network.account
-        ).then(
-        (data) => {
-          setReserves([data[0], data[1]]);
-          setLiquidityTokens(data[2]);
-        }
-      );
+      ).then((data) => {
+        setReserves([data[0], data[1]]);
+        setLiquidityTokens(data[2]);
+      });
     }
-  }, [coin1.address, coin2.address, props.network.account, props.network.factory, props.network.signer]);
+  }, [
+    coin1.address,
+    coin2.address,
+    props.network.account,
+    props.network.factory,
+    props.network.signer,
+  ]);
 
   // This hook is called when either of the state variables `field1Value`, `field2Value`, `coin1.address` or `coin2.address` change.
   // It will give a preview of the liquidity deployment.
@@ -278,7 +284,15 @@ function LiquidityDeployer(props) {
         setLiquidityOut([data[0], data[1], data[2]]);
       });
     }
-  }, [coin1.address, coin2.address, field1Value, field2Value, props.network.factory, props.network.signer]);
+  }, [
+    coin1.address,
+    coin2.address,
+    field1Value,
+    field2Value,
+    props.network.factory,
+    props.network.signer,
+    isButtonEnabled,
+  ]);
 
   // This hook creates a timeout that will run every ~10 seconds, it's role is to check if the user's balance has
   // updated has changed. This allows them to see when a transaction completes by looking at the balance output.
@@ -299,7 +313,7 @@ function LiquidityDeployer(props) {
         });
       }
 
-      if (coin1.address && props.network.account &&!wrongNetworkOpen) {
+      if (coin1.address && props.network.account && !wrongNetworkOpen) {
         getBalanceAndSymbol(
           props.network.account,
           coin1.address,
@@ -307,16 +321,14 @@ function LiquidityDeployer(props) {
           props.network.signer,
           props.network.weth.address,
           props.network.coins
-          ).then(
-          (data) => {
-            setCoin1({
-              ...coin1,
-              balance: data.balance,
-            });
-          }
-        );
+        ).then((data) => {
+          setCoin1({
+            ...coin1,
+            balance: data.balance,
+          });
+        });
       }
-      if (coin2.address && props.network.account &&!wrongNetworkOpen) {
+      if (coin2.address && props.network.account && !wrongNetworkOpen) {
         getBalanceAndSymbol(
           props.network.account,
           coin2.address,
@@ -324,14 +336,12 @@ function LiquidityDeployer(props) {
           props.network.signer,
           props.network.weth.address,
           props.network.coins
-          ).then(
-          (data) => {
-            setCoin2({
-              ...coin2,
-              balance: data.balance,
-            });
-          }
-        );
+        ).then((data) => {
+          setCoin2({
+            ...coin2,
+            balance: data.balance,
+          });
+        });
       }
     }, 10000);
 
@@ -356,9 +366,7 @@ function LiquidityDeployer(props) {
         coins={props.network.coins}
         signer={props.networksigner}
       />
-      <WrongNetwork
-        open={wrongNetworkOpen}
-      />
+      <WrongNetwork open={wrongNetworkOpen} />
 
       <Grid container direction="column" alignItems="center" spacing={2}>
         <Grid item xs={12} className={classes.fullWidth}>
@@ -400,15 +408,25 @@ function LiquidityDeployer(props) {
           spacing={2}
         >
           {/* Balance Display */}
-          <Typography variant="h6">Your Balances</Typography>
+          <Typography variant="h6" style={{ color: "#fff" }}>
+            Your Balances
+          </Typography>
           <Grid container direction="row" justifyContent="space-between">
             <Grid item xs={6}>
-              <Typography variant="body1" className={classes.balance}>
+              <Typography
+                variant="body1"
+                className={classes.balance}
+                style={{ color: "#9f9f9f" }}
+              >
                 {formatBalance(coin1.balance, coin1.symbol)}
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="body1" className={classes.balance}>
+              <Typography
+                variant="body1"
+                className={classes.balance}
+                style={{ color: "#9f9f9f" }}
+              >
                 {formatBalance(coin2.balance, coin2.symbol)}
               </Typography>
             </Grid>
@@ -417,15 +435,25 @@ function LiquidityDeployer(props) {
           <hr className={classes.hr} />
 
           {/* Reserves Display */}
-          <Typography variant="h6">Reserves</Typography>
+          <Typography variant="h6" style={{ color: "#fff" }}>
+            Reserves
+          </Typography>
           <Grid container direction="row" justifyContent="space-between">
             <Grid item xs={6}>
-              <Typography variant="body1" className={classes.balance}>
+              <Typography
+                variant="body1"
+                className={classes.balance}
+                style={{ color: "#9f9f9f" }}
+              >
                 {formatReserve(reserves[0], coin1.symbol)}
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="body1" className={classes.balance}>
+              <Typography
+                variant="body1"
+                className={classes.balance}
+                style={{ color: "#9f9f9f" }}
+              >
                 {formatReserve(reserves[1], coin2.symbol)}
               </Typography>
             </Grid>
@@ -434,10 +462,16 @@ function LiquidityDeployer(props) {
           <hr className={classes.hr} />
 
           {/* Liquidity Tokens Display */}
-          <Typography variant="h6">Your Liquidity Pool Tokens</Typography>
+          <Typography variant="h6" style={{ color: "#fff" }}>
+            Your Liquidity Pool Tokens
+          </Typography>
           <Grid container direction="row" justifyContent="center">
             <Grid item xs={6}>
-              <Typography variant="body1" className={classes.balance}>
+              <Typography
+                variant="body1"
+                className={classes.balance}
+                style={{ color: "#9f9f9f" }}
+              >
                 {formatReserve(liquidityTokens, "UNI-V2")}
               </Typography>
             </Grid>
@@ -454,27 +488,43 @@ function LiquidityDeployer(props) {
             className={classes.fullWidth}
           >
             {/* Tokens in */}
-            <Typography variant="h6">Tokens in</Typography>
+            <Typography variant="h6" color="secondary">
+              Tokens in
+            </Typography>
             <Grid container direction="row" justifyContent="space-between">
               <Grid item xs={6}>
-                <Typography variant="body1" className={classes.balance}>
+                <Typography
+                  variant="body1"
+                  className={classes.balance}
+                  color="secondary"
+                >
                   {formatBalance(liquidityOut[0], coin1.symbol)}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="body1" className={classes.balance}>
+                <Typography
+                  variant="body1"
+                  className={classes.balance}
+                  color="secondary"
+                >
                   {formatBalance(liquidityOut[1], coin2.symbol)}
                 </Typography>
               </Grid>
             </Grid>
 
-            <hr className={classes.hr} />
+            <hr className={classes.hr} style={{ color: "#000" }} />
 
             {/* Liquidity Tokens Display */}
-            <Typography variant="h6">Liquidity Pool Tokens Out</Typography>
+            <Typography variant="h6" color="secondary">
+              Liquidity Pool Tokens Out
+            </Typography>
             <Grid container direction="row" justifyContent="center">
               <Grid item xs={6}>
-                <Typography variant="body1" className={classes.balance}>
+                <Typography
+                  variant="body1"
+                  className={classes.balance}
+                  color="secondary"
+                >
                   {formatReserve(liquidityOut[2], "UNI-V2")}
                 </Typography>
               </Grid>
@@ -491,6 +541,7 @@ function LiquidityDeployer(props) {
           success={false}
           fail={false}
           onClick={deploy}
+          style={{ color: "#000" }}
         >
           <AccountBalanceIcon className={classes.buttonIcon} />
           Deploy

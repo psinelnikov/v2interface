@@ -11,15 +11,8 @@ import SwapVerticalCircleIcon from "@material-ui/icons/SwapVerticalCircle";
 import { useSnackbar } from "notistack";
 import LoopIcon from "@material-ui/icons/Loop";
 import {
-  getAccount,
-  getFactory,
-  getProvider,
-  getRouter,
-  getSigner,
-  getNetwork,
   getAmountOut,
   getBalanceAndSymbol,
-  getWeth,
   swapTokens,
   getReserves,
 } from "../ethereumFunctions";
@@ -27,8 +20,6 @@ import CoinField from "./CoinField";
 import CoinDialog from "./CoinDialog";
 import LoadingButton from "../Components/LoadingButton";
 import WrongNetwork from "../Components/wrongNetwork";
-import COINS from "../constants/coins";
-import * as chains from "../constants/chains";
 
 const styles = (theme) => ({
   paperContainer: {
@@ -56,6 +47,8 @@ const styles = (theme) => ({
     padding: theme.spacing(1),
     overflow: "wrap",
     textAlign: "center",
+    color: theme.palette.primary.contrastText,
+    fontWeight: 600,
   },
   footer: {
     marginTop: "285px",
@@ -71,7 +64,7 @@ function CoinSwapper(props) {
   // Stores a record of whether their respective dialog window is open
   const [dialog1Open, setDialog1Open] = React.useState(false);
   const [dialog2Open, setDialog2Open] = React.useState(false);
-  const [wrongNetworkOpen, setwrongNetworkOpen] = React.useState(false);
+  const [wrongNetworkOpen] = React.useState(false);
 
   // Stores data about their respective coin
   const [coin1, setCoin1] = React.useState({
@@ -281,7 +274,13 @@ function CoinSwapper(props) {
     } else {
       setField2Value("");
     }
-  }, [field1Value, coin1.address, coin2.address]);
+  }, [
+    field1Value,
+    coin1.address,
+    coin2.address,
+    props.network.router,
+    props.network.signer,
+  ]);
 
   // This hook creates a timeout that will run every ~10 seconds, it's role is to check if the user's balance has
   // updated has changed. This allows them to see when a transaction completes by looking at the balance output.
@@ -355,10 +354,6 @@ function CoinSwapper(props) {
       {/* Coin Swapper */}
       <Container maxWidth="xs">
         <Paper className={classes.paperContainer}>
-          <Typography variant="h5" className={classes.title}>
-            Swap Coins
-          </Typography>
-
           <Grid container direction="column" alignItems="center" spacing={2}>
             <Grid item xs={12} className={classes.fullWidth}>
               <CoinField
@@ -370,7 +365,11 @@ function CoinSwapper(props) {
               />
             </Grid>
 
-            <IconButton onClick={switchFields} className={classes.switchButton}>
+            <IconButton
+              onClick={switchFields}
+              className={classes.switchButton}
+              style={{ color: "#9f9f9f" }}
+            >
               <SwapVerticalCircleIcon fontSize="medium" />
             </IconButton>
 
@@ -386,15 +385,25 @@ function CoinSwapper(props) {
             <hr className={classes.hr} />
 
             {/* Balance Display */}
-            <Typography variant="h6">Your Balances</Typography>
+            <Typography variant="h6" style={{ color: "#fff" }}>
+              Your Balances
+            </Typography>
             <Grid container direction="row" justifyContent="space-between">
               <Grid item xs={6}>
-                <Typography variant="body1" className={classes.balance}>
+                <Typography
+                  variant="body1"
+                  className={classes.balance}
+                  style={{ color: "#9f9f9f" }}
+                >
                   {formatBalance(coin1.balance, coin1.symbol)}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="body1" className={classes.balance}>
+                <Typography
+                  variant="body1"
+                  className={classes.balance}
+                  style={{ color: "#9f9f9f" }}
+                >
                   {formatBalance(coin2.balance, coin2.symbol)}
                 </Typography>
               </Grid>
@@ -403,15 +412,25 @@ function CoinSwapper(props) {
             <hr className={classes.hr} />
 
             {/* Reserves Display */}
-            <Typography variant="h6">Reserves</Typography>
+            <Typography variant="h6" style={{ color: "#fff" }}>
+              Reserves
+            </Typography>
             <Grid container direction="row" justifyContent="space-between">
               <Grid item xs={6}>
-                <Typography variant="body1" className={classes.balance}>
+                <Typography
+                  variant="body1"
+                  className={classes.balance}
+                  style={{ color: "#9f9f9f" }}
+                >
                   {formatReserve(reserves[0], coin1.symbol)}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="body1" className={classes.balance}>
+                <Typography
+                  variant="body1"
+                  className={classes.balance}
+                  style={{ color: "#9f9f9f" }}
+                >
                   {formatReserve(reserves[1], coin2.symbol)}
                 </Typography>
               </Grid>
@@ -425,9 +444,10 @@ function CoinSwapper(props) {
               success={false}
               fail={false}
               onClick={swap}
+              style={{ color: "#000" }}
             >
               <LoopIcon />
-              Swap
+              <span style={{ fontWeight: 600 }}>Swap</span>
             </LoadingButton>
           </Grid>
         </Paper>

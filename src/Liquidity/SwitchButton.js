@@ -7,16 +7,20 @@ export default function SwitchButton(props) {
   const changeStyles = (K) => {
     if (K === true) {
       let add_button = document.getElementById("add-button");
-      add_button.style.backgroundColor = "#ff0000";
+      add_button.style.backgroundColor = "#00CFFF";
+      add_button.style.color = "#000";
 
       let remove_button = document.getElementById("remove-button");
-      remove_button.style.backgroundColor = "#9e9e9e";
+      remove_button.style.backgroundColor = "#000000";
+      remove_button.style.color = "#fff";
     } else {
       let remove_button = document.getElementById("remove-button");
-      remove_button.style.backgroundColor = "#ff0000";
+      remove_button.style.backgroundColor = "#00CFFF";
+      remove_button.style.color = "#000";
 
       let add_button = document.getElementById("add-button");
-      add_button.style.backgroundColor = "#9e9e9e";
+      add_button.style.backgroundColor = "#000000";
+      add_button.style.color = "#fff";
     }
   };
 
@@ -43,6 +47,7 @@ export default function SwitchButton(props) {
             setDeploy(false);
             changeStyles(false);
           }}
+          style={{ color: "#fff" }}
         >
           Remove Liquidity
         </Button>
