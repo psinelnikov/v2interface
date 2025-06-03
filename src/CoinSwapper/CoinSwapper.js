@@ -51,7 +51,7 @@ const styles = (theme) => ({
     fontWeight: 600,
   },
   footer: {
-    marginTop: "285px",
+    marginTop: "25px",
   },
 });
 
@@ -452,8 +452,7 @@ function CoinSwapper(props) {
           </Grid>
         </Paper>
       </Container>
-
-      {/* <Grid
+      <Grid
         container
         className={classes.footer}
         direction="row"
@@ -461,10 +460,17 @@ function CoinSwapper(props) {
         alignItems="flex-end"
       >
         <p>
-        Alternative Uniswap Interface | Get AUT for use in the bakerloo testnet{" "}
-          <a href="https://faucet.bakerloo.autonity.network/">here</a>
+          Get test tokens{" "}
+          <a
+            href="https://forum.ceg.vote/t/request-dex-test-tokens-here/5206"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#00CFFF" }}
+          >
+            here
+          </a>
         </p>
-      </Grid> */}
+      </Grid>
     </div>
   );
 }
