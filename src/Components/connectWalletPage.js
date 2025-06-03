@@ -50,7 +50,7 @@ function ConnectWalletPage() {
           <Typography
             variant="h6"
             className={classes.title}
-            color="common.white"
+            style={{ color: "white" }}
           >
             Please connect an Ethereum wallet to your browser to use the
             application
