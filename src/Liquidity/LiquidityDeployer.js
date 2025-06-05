@@ -23,6 +23,7 @@ const styles = (theme) => ({
   },
   fullWidth: {
     width: "100%",
+    margin: 0,
   },
   values: {
     width: "50%",

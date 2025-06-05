@@ -9,6 +9,11 @@ const HYPERION_SEPOLIACoins = [
     address: "0x94765A5Ad79aE18c6913449Bf008A0B5f247D301", // Weth address is fetched from the router
   },
   {
+    name: "Tether USD",
+    abbr: "USDT",
+    address: "0x3c099E287eC71b4AA61A7110287D715389329237",
+  },
+  {
     name: "Dai",
     abbr: "DAI",
     address: "0xc4c33c42684ad16e84800c25d5dE7B650E9F95Ca",
@@ -22,11 +27,6 @@ const HYPERION_SEPOLIACoins = [
     name: "Wrapped Bitcoin",
     abbr: "WBTC",
     address: "0x63d940F5b04235aba7E921a3b508aB1360D32706",
-  },
-  {
-    name: "Tether USD",
-    abbr: "USDT",
-    address: "0x3c099E287eC71b4AA61A7110287D715389329237",
   },
 ];
 

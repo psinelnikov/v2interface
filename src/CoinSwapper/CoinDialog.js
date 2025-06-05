@@ -35,8 +35,7 @@ const styles = (theme) => ({
     paddingBottom: theme.spacing(2),
   },
   coinList: {
-    height: "300px",
-    overflowY: "scroll",
+    height: "325px",
   },
   coinContainer: {
     paddingLeft: theme.spacing(0.5),
@@ -151,8 +150,14 @@ export default function CoinDialog(props) {
             helperText={error}
             fullWidth
             className={classes.address}
-            InputProps={{ style: { color: "#fff" } }}
-            InputLabelProps={{ style: { color: "#fff" } }}
+            InputProps={{
+              style: {
+                color: "#fff",
+                backgroundColor: "#263238",
+                borderColor: "#263238",
+              },
+            }}
+            InputLabelProps={{ style: { color: "#263238" } }}
             FormHelperTextProps={{ style: { color: "#fff" } }}
           />
 
@@ -162,7 +167,7 @@ export default function CoinDialog(props) {
             <Grid container direction="column">
               {/* Maps all of the tokens in the constants file to buttons */}
               {coins.map((coin, index) => (
-                <Grid item key={index} xs={12}>
+                <Grid item key={index} xs={12} style={{ marginBottom: "3px" }}>
                   <CoinButton
                     coinName={coin.name}
                     coinAbbr={coin.abbr}
