@@ -457,17 +457,27 @@ function CoinSwapper(props) {
         className={classes.footer}
         direction="row"
         justifyContent="center"
-        alignItems="flex-end"
+        alignItems="center"
+        style={{ gap: "1rem" }}
       >
         <p>
-          Get test tokens{" "}
           <a
             href="https://forum.ceg.vote/t/request-dex-test-tokens-here/5206"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "#00CFFF" }}
           >
-            here
+            Test Tokens
+          </a>
+        </p>
+        <p>
+          <a
+            href="https://subgraph.metis.io/subgraphs/name/hype-test-dex"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#00CFFF" }}
+          >
+            Subgraph
           </a>
         </p>
       </Grid>
